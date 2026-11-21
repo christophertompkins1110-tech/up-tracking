@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UP Tracking — Operator Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./" aria-label="UP Tracking home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20V6" /><path d="M5 13l7-7 7 7" />
+          </svg>
+        </span>
+        <span class="brand-text">UP Tracking</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="./">Public site</a>
+        <a href="#" id="signout-link" hidden>Sign out</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap op-wrap">
+    <div id="not-configured" class="op-notice" hidden>
+      <strong>Backend not connected yet.</strong>
+      Create <code>config.js</code> from <code>config.sample.js</code> with your Supabase
+      project URL and anon key, then reload this page.
+    </div>
+
+    <!-- Sign in -->
+    <section id="login-view" hidden>
+      <h1 class="op-title">Operator sign in</h1>
+      <p class="op-sub">Sign in to create shipments and record scans.</p>
+      <form id="login-form" class="op-card op-form" autocomplete="on">
+        <label>Email<input id="login-email" type="email" required autocomplete="username" /></label>
+        <label>Password<input id="login-password" type="password" required autocomplete="current-password" /></label>
+        <button type="submit">Sign in</button>
+        <p id="login-error" class="op-error" role="alert"></p>
+      </form>
+    </section>
+
+    <!-- Console -->
+    <section id="console-view" hidden>
+      <div class="op-head">
+        <h1 class="op-title">Operator console</h1>
+        <span id="who" class="op-sub"></span>
+      </div>
+
+      <div class="op-grid">
+        <!-- Create shipment -->
+        <form id="create-form" class="op-card op-form">
+          <h2 class="op-card-title">New shipment</h2>
+          <label>Recipient<input id="s-recipient" type="text" placeholder="Customer name" /></label>
+          <label>From<input id="s-origin" type="text" placeholder="Los Angeles, CA 90018" /></label>
+          <label>To<input id="s-destination" type="text" placeholder="Brooks, GA 30205" /></label>
+          <label>Service
+            <select id="s-service">
+              <option>Ground</option><option>Standard</option><option>Express</option>
+            </select>
+          </label>
+          <button type="submit">Create &amp; assign number</button>
+          <p id="create-msg" class="op-ok" role="status"></p>
+        </form>
+
+        <!-- Add a scan -->
+        <form id="scan-form" class="op-card op-form">
+          <h2 class="op-card-title">Record a scan</h2>
+          <label>Shipment
+            <select id="scan-shipment"><option value="">Select a shipment…</option></select>
+          </label>
+          <label>Status
+            <select id="scan-status">
+              <option value="accepted|Accepted">Accepted (picked up)</option>
+              <option value="transit|In transit">In transit</option>
+              <option value="out|Out for delivery">Out for delivery</option>
+              <option value="delivered|Delivered">Delivered</option>
+            </select>
+          </label>
+          <label>Location<input id="scan-place" type="text" placeholder="Phoenix, AZ" /></label>
+          <label>Time
+            <input id="scan-time" type="datetime-local" />
+            <span class="op-hint">Leave blank for now.</span>
+          </label>
+          <button type="submit">Add scan</button>
+          <p id="scan-msg" class="op-ok" role="status"></p>
+        </form>
+      </div>
+
+      <!-- Recent shipments -->
+      <section class="op-card">
+        <h2 class="op-card-title">Your shipments</h2>
+        <div id="shipments-list" class="op-list">Loading…</div>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="tracking.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="operator.js"></script>
+</body>
+</html>

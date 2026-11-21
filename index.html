@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UP Tracking — Parcel Tracking (Demo)</title>
+  <meta name="description" content="UP Tracking — track a parcel from drop-off to delivery. Sample project, demo data only." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="demo-banner" role="note">
+    Prototype — tracker in development. Not yet a hosted service; some entries are sample data.
+  </div>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./" aria-label="UP Tracking home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20V6" /><path d="M5 13l7-7 7 7" />
+          </svg>
+        </span>
+        <span class="brand-text">UP Tracking</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#track">Track</a>
+        <a href="#how">How it works</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="track">
+      <svg class="hero-route" viewBox="0 0 600 120" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,96 C140,96 180,34 320,34 C460,34 470,86 600,86" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round" />
+        <circle cx="0" cy="96" r="4" /><circle cx="320" cy="34" r="4" /><circle cx="600" cy="86" r="4" />
+      </svg>
+      <div class="wrap hero-inner">
+        <p class="hero-kicker">Parcel tracking</p>
+        <h1>Follow every parcel, drop-off to doorstep.</h1>
+        <p class="hero-sub">Enter a tracking number to see exactly where a shipment is and every stop it has made.</p>
+
+        <form class="track-form" id="track-form" autocomplete="off">
+          <label class="sr-only" for="track-input">Tracking number</label>
+          <input
+            id="track-input"
+            name="tracking"
+            type="text"
+            inputmode="latin"
+            placeholder="UP0000000018"
+            spellcheck="false"
+            aria-describedby="track-hint"
+          />
+          <button type="submit">Track parcel</button>
+        </form>
+        <div class="hero-foot">
+          <span class="hint" id="track-hint">Numbers look like UP + 9 digits + a check digit.</span>
+          <div class="samples" id="samples" aria-label="Sample tracking numbers"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="results wrap" id="results" hidden>
+      <!-- Result card rendered by app.js -->
+    </section>
+
+    <section class="how" id="how">
+      <div class="wrap">
+        <h2>How a parcel moves through UP Tracking</h2>
+        <ol class="how-steps">
+          <li>
+            <span class="how-num" aria-hidden="true">1</span>
+            <h3>Booked</h3>
+            <p>A shipment is created at drop-off and assigned its tracking number.</p>
+          </li>
+          <li>
+            <span class="how-num" aria-hidden="true">2</span>
+            <h3>Scanned</h3>
+            <p>At each facility, staff record a scan — accepted, in transit, out for delivery.</p>
+          </li>
+          <li>
+            <span class="how-num" aria-hidden="true">3</span>
+            <h3>Tracked</h3>
+            <p>The number reads those scans back as a live route, newest first.</p>
+          </li>
+        </ol>
+        <p class="how-note">
+          In this demo the shipments are pre-loaded sample data. In a live service, scans are written to a
+          database by staff or handheld scanners and this page reads them through an API.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <span class="brand-text footer-brand">UP Tracking</span>
+      <span class="footer-note">Prototype tracker · <a href="operator.html">Operator login</a></span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="tracking.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
