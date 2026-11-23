@@ -211,6 +211,24 @@ code, .mono { font-family: var(--mono); }
 .timeline .ev-time { color: var(--slate); font-size: .82rem; white-space: nowrap; font-family: var(--mono); }
 .timeline .ev-place { color: var(--slate); font-size: .9rem; }
 
+/* ---- Planned route (scheduled stops are clearly not-yet-reached) -------- */
+.route { list-style: none; margin: 0; padding: 4px 24px 16px; }
+.rt { position: relative; display: flex; align-items: center; gap: 10px; padding: 9px 0 9px 28px; }
+.rt::before {
+  content: ""; position: absolute; left: 4px; top: 50%; transform: translateY(-50%);
+  width: 11px; height: 11px; border-radius: 50%; background: #fff; border: 2px solid var(--line); z-index: 1;
+}
+.rt::after { content: ""; position: absolute; left: 8px; top: 50%; height: 100%; width: 2px; background: var(--line); }
+.rt:last-child::after { display: none; }
+.rt-city { font-weight: 600; font-size: .95rem; }
+.rt-tag { margin-left: auto; font-size: .72rem; font-weight: 600; padding: 3px 10px; border-radius: 999px; color: var(--slate); background: var(--paper); white-space: nowrap; }
+.rt-passed::before { background: var(--amber); border-color: var(--amber); }
+.rt-passed .rt-tag { color: var(--amber-ink); background: var(--amber-wash); }
+.rt-here::before { background: var(--amber); border-color: var(--amber); box-shadow: 0 0 0 5px var(--amber-wash); }
+.rt-here .rt-tag { color: #fff; background: var(--amber); }
+.rt-ahead .rt-city { color: var(--slate); font-weight: 500; }
+.rt-ahead::before { background: #fff; border-color: var(--line); }
+
 .not-found {
   background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
   padding: 26px; box-shadow: var(--shadow-lg);

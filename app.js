@@ -59,6 +59,38 @@ function reachedStage(latestKind) {
   return STAGE_INDEX[latestKind] ?? 0;
 }
 
+/* ---- Planned route ------------------------------------------------------
+ * The ordered cities a parcel will travel through. A stop is only shown as
+ * "passed" or "currently here" when a real scan has actually reached it;
+ * every stop ahead is marked "Scheduled" and never shown as already visited.
+ */
+function routeProgress(route, events) {
+  const places = (events || []).map((e) => (e.place || "").toLowerCase());
+  const cityOf = (s) => String(s).split(",")[0].trim().toLowerCase();
+  let current = -1;
+  route.forEach((stop, i) => {
+    const c = cityOf(stop);
+    if (c && places.some((p) => p.includes(c))) current = Math.max(current, i);
+  });
+  return current; // index of the furthest stop actually reached (-1 = none yet)
+}
+
+function renderRoute(route, events) {
+  if (!Array.isArray(route) || route.length === 0) return "";
+  const current = routeProgress(route, events);
+  const rows = route.map((stop, i) => {
+    const state = i < current ? "passed" : i === current ? "here" : "ahead";
+    const tag = state === "passed" ? "Passed" : state === "here" ? "Currently here" : "Scheduled";
+    return `<li class="rt rt-${state}">
+        <span class="rt-dot" aria-hidden="true"></span>
+        <span class="rt-city">${escapeHtml(stop)}</span>
+        <span class="rt-tag">${tag}</span>
+      </li>`;
+  }).join("");
+  return `<div class="timeline-h">Route</div>
+      <ul class="route" aria-label="Planned route">${rows}</ul>`;
+}
+
 function renderStages(currentIndex) {
   return `
     <div class="stages" role="list" aria-label="Delivery progress">
@@ -120,6 +152,7 @@ function renderResult(code, shipment) {
         <div><div class="label">Service</div><div class="value">${escapeHtml(shipment.service || "—")}</div></div>
         <div><div class="label">Last update</div><div class="value">${escapeHtml(fmtDateTime(latest.ts))}</div></div>
       </div>
+      ${renderRoute(shipment.route, shipment.events)}
       <div class="timeline-h">Tracking history</div>
       <ul class="timeline">${events}</ul>
     </div>`;
